@@ -1,12 +1,16 @@
 package eina.imagine;
 
 import android.annotation.SuppressLint;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+
+import java.util.ArrayList;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -83,6 +87,11 @@ public class FullscreenActivity extends AppCompatActivity {
         }
     };
 
+    /** Custom variables */
+    private SwipeDeck cardStack;
+    private ArrayList<String> testData;
+    private SwipeAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,17 +101,73 @@ public class FullscreenActivity extends AppCompatActivity {
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
+        mContentView.setVisibility(View.INVISIBLE);
 
-        
+        cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
+
+        //cardStack.NUM
+
+        testData = new ArrayList<>();
+        testData.add("0");
+        testData.add("1");
+        testData.add("2");
+        testData.add("3");
+        testData.add("4");
+
+        adapter = new SwipeAdapter(testData, this);
+        if(cardStack != null){
+            cardStack.setAdapter(adapter);
+        }
+        cardStack.setCallback(new SwipeDeck.SwipeDeckCallback() {
+            @Override
+            public void cardSwipedLeft(long positionInAdapter) {
+                Log.i("MainActivity", "card was swiped left, position in adapter: " + positionInAdapter);
+            }
+
+            @Override
+            public void cardSwipedRight(long positoinInAdapter) {
+                Log.i("MainActivity", "card was swiped right, position in adapter: " + positoinInAdapter);
+
+            }
+        });
+
+        cardStack.setLeftImage(R.id.left_image);
+        cardStack.setRightImage(R.id.right_image);
+
+        //example of buttons triggering events on the deck
+        Button btn = (Button) findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardStack.swipeTopCardLeft(180);
+            }
+        });
+        Button btn2 = (Button) findViewById(R.id.button2);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardStack.swipeTopCardRight(180);
+            }
+        });
+
+        Button btn3 = (Button) findViewById(R.id.button3);
+        btn3.setVisibility(View.INVISIBLE);
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                testData.add("a sample string.");
+                adapter.notifyDataSetChanged();
+            }
+        });
 
 
         // Set up the user interaction to manually show or hide the system UI.
-        mContentView.setOnClickListener(new View.OnClickListener() {
+        /*mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toggle();
             }
-        });
+        });*/
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away

@@ -8,6 +8,14 @@
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
+    <TextView
+        android:id="@+id/fullscreen_contento"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        android:text="@string/dummy_content"
+        android:textColor="#33b5e5"
+        android:textStyle="bold" />
     <com.daprlabs.aaron.swipedeck.layouts.SwipeFrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:swipedeck="http://schemas.android.com/apk/res-auto"
@@ -16,7 +24,7 @@
         android:id="@+id/swipeLayout"
         android:orientation="vertical">
 
-        <com.daprlabs.aaron.swipedeck.SwipeDeck
+        <eina.imagine.SwipeDeck
             android:id="@+id/swipe_deck"
             android:layout_width="match_parent"
             android:layout_height="480dp"

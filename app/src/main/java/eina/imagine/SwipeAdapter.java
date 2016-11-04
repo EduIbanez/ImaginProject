@@ -13,9 +13,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-/**
- * Created by jorcox on 04/11/2016.
- */
 public class SwipeAdapter extends BaseAdapter {
 
     private List<String> data;

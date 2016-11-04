@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
+
             <ImageView
                 android:layout_weight="1"
                 android:id="@+id/left_image"
@@ -40,6 +41,7 @@
                 android:src="@drawable/left_arrow"
                 android:layout_below="@id/offer_image"
                 android:layout_centerHorizontal="true" />
+
             <ImageView
                 android:layout_weight="1"
                 android:id="@+id/right_image"
