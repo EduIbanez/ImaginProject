@@ -109,10 +109,6 @@ public class FullscreenActivity extends AppCompatActivity {
 
         testData = new ArrayList<>();
         testData.add("0");
-        testData.add("1");
-        testData.add("2");
-        testData.add("3");
-        testData.add("4");
 
         adapter = new SwipeAdapter(testData, this);
         if(cardStack != null){
@@ -121,12 +117,12 @@ public class FullscreenActivity extends AppCompatActivity {
         cardStack.setCallback(new SwipeDeck.SwipeDeckCallback() {
             @Override
             public void cardSwipedLeft(long positionInAdapter) {
-                Log.i("MainActivity", "card was swiped left, position in adapter: " + positionInAdapter);
+                Log.i("FullscreenActivity", "card was swiped left, position in adapter: " + positionInAdapter);
             }
 
             @Override
-            public void cardSwipedRight(long positoinInAdapter) {
-                Log.i("MainActivity", "card was swiped right, position in adapter: " + positoinInAdapter);
+            public void cardSwipedRight(long positionInAdapter) {
+                Log.i("FullscreenActivity", "card was swiped right, position in adapter: " + positionInAdapter);
 
             }
         });
@@ -140,6 +136,7 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cardStack.swipeTopCardLeft(180);
+                adapter.addCard("Left");
             }
         });
         Button btn2 = (Button) findViewById(R.id.button2);
@@ -147,19 +144,9 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cardStack.swipeTopCardRight(180);
+                adapter.addCard("Right");
             }
         });
-
-        Button btn3 = (Button) findViewById(R.id.button3);
-        btn3.setVisibility(View.INVISIBLE);
-        btn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                testData.add("a sample string.");
-                adapter.notifyDataSetChanged();
-            }
-        });
-
 
         // Set up the user interaction to manually show or hide the system UI.
         /*mContentView.setOnClickListener(new View.OnClickListener() {

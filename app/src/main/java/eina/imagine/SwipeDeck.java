@@ -42,9 +42,7 @@ public class SwipeDeck extends FrameLayout {
         super(context, attrs);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.SwipeDeck2,
-                0, 0);
+                attrs, R.styleable.SwipeDeck2, 0, 0);
         NUMBER_OF_SIMULTANEOUS_CARDS = 1;
         OPACITY_END = a.getFloat(R.styleable.SwipeDeck2_opacity_end, 0.33f);
         ROTATION_DEGREES = a.getFloat(R.styleable.SwipeDeck2_rotation_degrees, 15f);

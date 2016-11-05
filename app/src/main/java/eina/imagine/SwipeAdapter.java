@@ -63,4 +63,8 @@ public class SwipeAdapter extends BaseAdapter {
         });
         return v;
     }
+
+    public void addCard(String card) {
+        data.add(card);
+    }
 }
