@@ -15,10 +15,10 @@ import java.util.List;
 
 public class SwipeAdapter extends BaseAdapter {
 
-    private List<String> data;
+    private List<State> data;
     private Context context;
 
-    public SwipeAdapter(List<String> data, Context context) {
+    public SwipeAdapter(List<State> data, Context context) {
         this.data = data;
         this.context = context;
     }
@@ -48,11 +48,12 @@ public class SwipeAdapter extends BaseAdapter {
             v = inflater.inflate(R.layout.tarjeta, parent, false);
         }
 
+        State item = (State)getItem(position);
         ImageView imageView = (ImageView) v.findViewById(R.id.offer_image);
-        Picasso.with(context).load(R.drawable.food).fit().centerCrop().into(imageView);
+        int id = v.getResources().getIdentifier("eina.imagine:drawable/" + item.getPathImage(), null, null);
+        Picasso.with(context).load(id).fit().centerCrop().into(imageView);
         TextView textView = (TextView) v.findViewById(R.id.sample_text);
-        String item = (String)getItem(position);
-        textView.setText(item);
+        textView.setText(item.getLine());
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +65,7 @@ public class SwipeAdapter extends BaseAdapter {
         return v;
     }
 
-    public void addCard(String card) {
+    public void addCard(State card) {
         data.add(card);
     }
 }

@@ -9,8 +9,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -89,8 +92,12 @@ public class FullscreenActivity extends AppCompatActivity {
 
     /** Custom variables */
     private SwipeDeck cardStack;
-    private ArrayList<String> testData;
+    private ArrayList<State> testData;
     private SwipeAdapter adapter;
+    private Properties properties;
+    private State actual;
+    private State actual1;
+    private State actual2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,12 +110,38 @@ public class FullscreenActivity extends AppCompatActivity {
         mContentView = findViewById(R.id.fullscreen_content);
         mContentView.setVisibility(View.INVISIBLE);
 
-        cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
+        //example of buttons triggering events on the deck
+        Button btn = (Button) findViewById(R.id.button);
+        Button btn2 = (Button) findViewById(R.id.button2);
+        Button btn3 = (Button) findViewById(R.id.button3);
 
-        //cardStack.NUM
+        btn3.setVisibility(View.INVISIBLE);
+
+        properties = new Properties();
+        try {
+            properties.load(getApplicationContext().getAssets().open("automata.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
+        Automata auto = new Automata("label.inicio", properties.get("label.inicio").toString());
+        actual = auto.readDecision();
+        actual.setPathImage("label_inicio");
 
         testData = new ArrayList<>();
-        testData.add("0");
+        testData.add(actual);
+
+        Automata auto1 = new Automata(actual.getSonA(), properties.get(actual.getSonA()).toString());
+        actual1 = auto1.readDecision();
+
+        Automata auto2 = new Automata(actual.getSonB(), properties.get(actual.getSonB()).toString());
+        actual2 = auto2.readDecision();
+
+        btn.setText(actual1.getLine().toString());
+        btn2.setText(actual2.getLine().toString());
+
+
 
         adapter = new SwipeAdapter(testData, this);
         if(cardStack != null){
@@ -118,35 +151,110 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void cardSwipedLeft(long positionInAdapter) {
                 Log.i("FullscreenActivity", "card was swiped left, position in adapter: " + positionInAdapter);
+
+                Automata auto = new Automata(actual.getSonA(), properties.get(actual.getSonA()).toString());
+                State decisionTomada = auto.readDecision();
+                /** Calcular siguiente estado */
+                String nuevo = auto.nextState(decisionTomada);
+                auto = new Automata(nuevo, properties.get(nuevo).toString());
+                actual = auto.readDecision();
+
+                actual.setPathImage(auto.getPath());
+                adapter.addCard(actual);
+
+                Button btn = (Button) findViewById(R.id.button);
+                Button btn2 = (Button) findViewById(R.id.button2);
+                Button btn3 = (Button) findViewById(R.id.button3);
+
+                if (actual.getSonA() != null && actual.getSonB() != null) {
+                    Automata auto1 = new Automata(actual.getSonA(), properties.get(actual.getSonA()).toString());
+                    actual1 = auto1.readDecision();
+
+                    Automata auto2 = new Automata(actual.getSonB(), properties.get(actual.getSonB()).toString());
+                    actual2 = auto2.readDecision();
+
+                    btn.setText(actual1.getLine().toString());
+                    btn2.setText(actual2.getLine().toString());
+                    btn.setVisibility(View.VISIBLE);
+                    btn2.setVisibility(View.VISIBLE);
+                    btn3.setVisibility(View.INVISIBLE);
+                } else {
+                    auto = new Automata(actual.getSonA(), properties.get(actual.getSonA()).toString());
+                    actual = auto.readDecision();
+                    actual.setPathImage(auto.getPath());
+                    adapter.addCard(actual);
+
+                    btn3.setText(actual.getLine().toString());
+                    btn.setVisibility(View.INVISIBLE);
+                    btn2.setVisibility(View.INVISIBLE);
+                    btn3.setVisibility(View.VISIBLE);
+                }
+
             }
 
             @Override
             public void cardSwipedRight(long positionInAdapter) {
                 Log.i("FullscreenActivity", "card was swiped right, position in adapter: " + positionInAdapter);
+                Automata auto = new Automata(actual.getSonB(), properties.get(actual.getSonB()).toString());
+                State decisionTomada = auto.readDecision();
+                /** Calcular siguiente estado */
+                String nuevo = auto.nextState(decisionTomada);
+                auto = new Automata(nuevo, properties.get(nuevo).toString());
+                actual = auto.readDecision();
 
+                actual.setPathImage(auto.getPath());
+                adapter.addCard(actual);
+
+                Button btn = (Button) findViewById(R.id.button);
+                Button btn2 = (Button) findViewById(R.id.button2);
+                Button btn3 = (Button) findViewById(R.id.button3);
+
+                if (actual.getSonA() != null && actual.getSonB() != null) {
+                    ImageView img = (ImageView) findViewById(R.id.offer_image);
+                    int id = getResources().getIdentifier("eina.imagine:drawable/" + actual.getPathImage(), null, null);
+                    img.setImageResource(id);
+                    Automata auto1 = new Automata(actual.getSonA(), properties.get(actual.getSonA()).toString());
+                    actual1 = auto1.readDecision();
+
+                    Automata auto2 = new Automata(actual.getSonB(), properties.get(actual.getSonB()).toString());
+                    actual2 = auto2.readDecision();
+
+                    btn.setText(actual1.getLine().toString());
+                    btn2.setText(actual2.getLine().toString());
+                    btn.setVisibility(View.VISIBLE);
+                    btn2.setVisibility(View.VISIBLE);
+                    btn3.setVisibility(View.INVISIBLE);
+                } else {
+                    auto = new Automata(actual.getSonA(), properties.get(actual.getSonA()).toString());
+                    actual = auto.readDecision();
+                    actual.setPathImage(auto.getPath());
+                    adapter.addCard(actual);
+                    btn3.setText(actual.getLine().toString());
+                    btn.setVisibility(View.INVISIBLE);
+                    btn2.setVisibility(View.INVISIBLE);
+                    btn3.setVisibility(View.VISIBLE);
+
+                }
             }
         });
 
-        cardStack.setLeftImage(R.id.left_image);
-        cardStack.setRightImage(R.id.right_image);
+        //cardStack.setLeftImage(R.id.left_image);
+        //cardStack.setRightImage(R.id.right_image);
 
-        //example of buttons triggering events on the deck
-        Button btn = (Button) findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cardStack.swipeTopCardLeft(180);
-                adapter.addCard("Left");
             }
         });
-        Button btn2 = (Button) findViewById(R.id.button2);
+
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cardStack.swipeTopCardRight(180);
-                adapter.addCard("Right");
             }
         });
+
 
         // Set up the user interaction to manually show or hide the system UI.
         /*mContentView.setOnClickListener(new View.OnClickListener() {
@@ -156,10 +264,6 @@ public class FullscreenActivity extends AppCompatActivity {
             }
         });*/
 
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
     }
 
     @Override

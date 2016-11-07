@@ -8,14 +8,6 @@
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <TextView
-        android:id="@+id/fullscreen_contento"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:keepScreenOn="true"
-        android:text="@string/dummy_content"
-        android:textColor="#33b5e5"
-        android:textStyle="bold" />
     <com.daprlabs.aaron.swipedeck.layouts.SwipeFrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:swipedeck="http://schemas.android.com/apk/res-auto"
@@ -27,13 +19,42 @@
         <eina.imagine.SwipeDeck
             android:id="@+id/swipe_deck"
             android:layout_width="match_parent"
-            android:layout_height="480dp"
+            android:layout_height="464dp"
             android:padding="50dp"
             swipedeck:max_visible="3"
             swipedeck:card_spacing="15dp"
             swipedeck:swipe_enabled="false"/>
 
     </com.daprlabs.aaron.swipedeck.layouts.SwipeFrameLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:text="add card" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="swipe left" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:text="swipe right" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"
@@ -63,19 +84,12 @@
             tools:ignore="UselessParent">
 
             <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
+                android:id="@+id/dummy_button"
+                style="?metaButtonBarButtonStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:text="swipe left" />
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="1"
-                android:text="swipe right" />
+                android:text="@string/dummy_button" />
 
         </LinearLayout>
     </FrameLayout>
